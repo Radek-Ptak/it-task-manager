@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Home | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>IT Company Task Manager</h1>
+  <p>Welcome to the IT Company Task Manager!</p>
+  <h2>Overview</h2>
+  <p>The system currently contains:</p>
+  <ul>
+    <li><strong>Worker:</strong> {{ num_worker }}</li>
+    <li><strong>Task:</strong> {{ num_task }}</li>
+  </ul>
+  <p>You have visited this page
+    {{ num_visits }} time{{ num_visits|pluralize }}.
+  </p>
+{% endblock %}
