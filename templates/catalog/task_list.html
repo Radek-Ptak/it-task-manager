@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Tasks | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>Tasks</h1>
+  {% for task in tasks %}
+    <h2>{{ task.name }}</h2>
+    <p>{{ task.description }}</p>
+    <p>Type: {{ task.task_type.name }}</p>
+    <p>Priority: {{ task.get_priority_display }}</p>
+    <p>Deadline: {{ task.deadline|date:"d.m.Y" }}</p>
+  {% empty %}
+    <p>No tasks available.</p>
+  {% endfor %}
+{% endblock %}

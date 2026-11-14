@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Position | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>Position types</h1>
+  {% for position in positions %}
+    <li>
+      {{ position.name }}: {{ position.workers_count }}
+      worker{{ position.workers_count|pluralize }}
+    </li>
+  {% empty %}
+    <p>No positions available.</p>
+  {% endfor %}
+{% endblock %}

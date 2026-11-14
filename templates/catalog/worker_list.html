@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>Workers | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>Workers</h1>
+  {% for worker in workers %}
+    <div class="mb-3">
+      <h3>{{ worker.get_full_name|default:worker.username }}</h3>
+      <p>Username: {{ worker.username }}</p>
+      <p>Email: {{ worker.email }}</p>
+      <p>
+        Position:
+        {{ worker.position.name|default:"No position" }}
+      </p>
+      <p>
+        Phone:
+        {{ worker.phone_number|default:"No phone number" }}
+      </p>
+    </div>
+  {% empty %}
+    <p>No workers available.</p>
+  {% endfor %}
+{% endblock %}
