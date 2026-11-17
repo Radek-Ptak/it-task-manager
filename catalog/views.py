@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import render
 from django.views import generic
@@ -5,6 +7,7 @@ from django.views import generic
 from catalog.models import Worker, Task, TaskType, Position
 
 
+@login_required
 def index(request):
     """View function for the home page of the site."""
 
@@ -22,7 +25,7 @@ def index(request):
     return render(request, "catalog/index.html", context=context)
 
 
-class TaskListView(generic.ListView):
+class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.select_related(
         "task_type"
@@ -32,7 +35,7 @@ class TaskListView(generic.ListView):
     paginate_by = 5
 
 
-class TaskDetailView(generic.DetailView):
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
     queryset = Task.objects.select_related(
         "task_type"
@@ -41,7 +44,7 @@ class TaskDetailView(generic.DetailView):
     )
 
 
-class WorkerListView(generic.ListView):
+class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     queryset = Worker.objects.select_related(
         "position"
@@ -51,7 +54,7 @@ class WorkerListView(generic.ListView):
     paginate_by = 5
 
 
-class WorkerDetailView(generic.DetailView):
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     queryset = Worker.objects.select_related(
         "position"
