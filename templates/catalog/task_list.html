@@ -4,13 +4,19 @@
 {% endblock %}
 {% block content %}
   <h1>Tasks</h1>
+  <ul>
   {% for task in tasks %}
-    <h2>{{ task.name }}</h2>
-    <p>{{ task.description }}</p>
-    <p>Type: {{ task.task_type.name }}</p>
-    <p>Priority: {{ task.get_priority_display }}</p>
-    <p>Deadline: {{ task.deadline|date:"d.m.Y" }}</p>
+    <li>
+      <h2><a href="{% url 'catalog:task-detail' pk=task.pk %}">
+      {{ task.name }}
+      </a></h2>
+      <p>{{ task.description }}</p>
+      <p>Type: {{ task.task_type.name }}</p>
+      <p>Priority: {{ task.get_priority_display }}</p>
+      <p>Deadline: {{ task.deadline|date:"d.m.Y" }}</p>
+    </li>
   {% empty %}
-    <p>No tasks available.</p>
+    <li>No tasks available.</li>
   {% endfor %}
+  </ul>
 {% endblock %}

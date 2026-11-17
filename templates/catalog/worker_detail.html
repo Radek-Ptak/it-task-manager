@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>{{ worker.username }} | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>{{ worker.get_full_name|default:worker.username }}</h1>
+  <p>Worker ID: {{ worker.id }}</p>
+  <p>Username: {{ worker.username }}</p>
+  <p>Email: {{ worker.email }}</p>
+  <p>
+    Position:
+    {{ worker.position.name|default:"No position" }}
+  </p>
+  <p>
+    Phone:
+    {{ worker.phone_number|default:"No phone number" }}
+  </p>
+  <h2>Assigned tasks</h2>
+  <ul>
+    {% for task in worker.tasks.all %}
+      <li>
+        <a href="{% url 'catalog:task-detail' pk=task.pk %}">
+          {{ task.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No tasks assigned.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

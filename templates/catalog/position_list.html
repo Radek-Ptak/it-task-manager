@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 {% block title %}
-  <title>Position | IT Task Manager</title>
+  <title>Positions | IT Task Manager</title>
 {% endblock %}
 {% block content %}
-  <h1>Position types</h1>
+  <h1>Positions</h1>
   {% for position in positions %}
-    <li>
-      {{ position.name }}: {{ position.workers_count }}
+    <h3>
+      {{ position.name }}:
+      {{ position.workers_count }}
       worker{{ position.workers_count|pluralize }}
-    </li>
+    </h3>
+    <ul>
+      {% for worker in position.workers.all %}
+        <li>
+          <a href="{% url 'catalog:worker-detail' pk=worker.pk %}">
+            {{ worker.get_full_name|default:worker.username }}
+          </a>
+        </li>
+      {% empty %}
+        <li>No workers with this position.</li>
+      {% endfor %}
+    </ul>
   {% empty %}
     <p>No positions available.</p>
   {% endfor %}

@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 {% block title %}
-<title>Task Types | IT Task Manager</title>
+  <title>Task Types | IT Task Manager</title>
 {% endblock %}
 {% block content %}
   <h1>Task types</h1>
   {% for task_type in task_types %}
-    <li>
-      {{ task_type.name }}: {{ task_type.tasks_count }}
+    <h3>
+      {{ task_type.name }}:
+      {{ task_type.tasks_count }}
       task{{ task_type.tasks_count|pluralize }}
-    </li>
+    </h3>
+    <ul>
+      {% for task in task_type.tasks.all %}
+        <li>
+          <a href="{% url 'catalog:task-detail' pk=task.pk %}">
+            {{ task.name }}
+          </a>
+        </li>
+      {% empty %}
+        <li>No tasks for this type.</li>
+      {% endfor %}
+    </ul>
   {% empty %}
     <p>No task types available.</p>
   {% endfor %}

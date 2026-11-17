@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}
+  <title>{{ task.name }} | IT Task Manager</title>
+{% endblock %}
+{% block content %}
+  <h1>{{ task.name }}</h1>
+  <p>Task ID: {{ task.id }}</p>
+  <p>Task description: {{ task.description }}</p>
+  <p>Type: {{ task.task_type.name }}</p>
+  <p>Priority: {{ task.get_priority_display }}</p>
+  <p>Deadline: {{ task.deadline|date:"d.m.Y" }}</p>
+  <p>Completed: {{ task.is_completed|yesno:"Completed,Not completed" }}</p>
+  <h2>Assignees</h2>
+  <ul>
+    {% for worker in task.assignees.all %}
+      <li>{{ worker.username }} — {{ worker.position }}</li>
+    {% empty %}
+      <li>No workers assigned.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

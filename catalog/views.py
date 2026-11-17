@@ -24,16 +24,40 @@ def index(request):
 
 class TaskListView(generic.ListView):
     model = Task
+    queryset = Task.objects.select_related(
+        "task_type"
+    )
     template_name = "catalog/task_list.html"
     context_object_name = "tasks"
     paginate_by = 5
 
 
+class TaskDetailView(generic.DetailView):
+    model = Task
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related(
+        "assignees__position"
+    )
+
+
 class WorkerListView(generic.ListView):
     model = Worker
+    queryset = Worker.objects.select_related(
+        "position"
+    )
     template_name = "catalog/worker_list.html"
     context_object_name = "workers"
     paginate_by = 5
+
+
+class WorkerDetailView(generic.DetailView):
+    model = Worker
+    queryset = Worker.objects.select_related(
+        "position"
+    ).prefetch_related(
+        "tasks"
+    )
 
 
 class TaskTypeListView(generic.ListView):
@@ -45,6 +69,8 @@ class TaskTypeListView(generic.ListView):
     def get_queryset(self):
         return TaskType.objects.annotate(
             tasks_count=Count("tasks"),
+        ).prefetch_related(
+            "tasks",
         )
 
 
@@ -57,4 +83,6 @@ class PositionListView(generic.ListView):
     def get_queryset(self):
         return Position.objects.annotate(
             workers_count=Count("workers")
+        ).prefetch_related(
+            "workers",
         )
