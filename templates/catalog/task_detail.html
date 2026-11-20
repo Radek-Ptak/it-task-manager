@@ -3,7 +3,12 @@
   <title>{{ task.name }} | IT Task Manager</title>
 {% endblock %}
 {% block content %}
-  <h1>{{ task.name }}</h1>
+  <h1>
+    {{ task.name }}
+  </h1>
+  <p>Created by:
+    {{ task.created_by.get_full_name|default:task.created_by.username }}
+  </p>
   <p>Task ID: {{ task.id }}</p>
   <p>Task description: {{ task.description }}</p>
   <p>Type: {{ task.task_type.name }}</p>
@@ -18,4 +23,13 @@
       <li>No workers assigned.</li>
     {% endfor %}
   </ul>
+  <a href="{% url 'catalog:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
+    Delete
+  </a>
+  <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-primary link-to-page">
+    Update
+  </a>
+  <a href="{% url 'catalog:task-list' %}" class="btn btn-secondary">
+    Cancel
+  </a>
 {% endblock %}

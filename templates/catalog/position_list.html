@@ -3,25 +3,65 @@
   <title>Positions | IT Task Manager</title>
 {% endblock %}
 {% block content %}
+  <div class="d-flex justify-content-between">
   <h1>Positions</h1>
-  {% for position in positions %}
-    <h3>
-      {{ position.name }}:
-      {{ position.workers_count }}
-      worker{{ position.workers_count|pluralize }}
-    </h3>
-    <ul>
-      {% for worker in position.workers.all %}
-        <li>
-          <a href="{% url 'catalog:worker-detail' pk=worker.pk %}">
-            {{ worker.get_full_name|default:worker.username }}
-          </a>
-        </li>
+    <div class="d-flex align-items-center">
+      <a href="{% url 'catalog:position-create' %}" class="btn btn-success d-flex justify-content-center align-items-center">
+        Create
+      </a>
+      <a href="{% url 'catalog:index' %}" class="btn btn-secondary ml-2">
+        Back
+      </a>
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Position type</th>
+        <th>Number</th>
+        <th>Workers</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for position in positions %}
+        <tr>
+          <td>{{ position.name }}</td>
+          <td>
+            {{ position.workers_count }}
+            worker{{ position.workers_count|pluralize }}
+          </td>
+          <td>
+            <div class="workers-scroll">
+              <ul class="mb-0">
+                {% for worker in position.workers.all %}
+                  <li>
+                    <a href="{% url 'catalog:worker-detail' pk=worker.pk %}">
+                      {{ worker.get_full_name|default:worker.username }}
+                    </a>
+                  </li>
+                {% empty %}
+                  <li>No workers with this position.</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </td>
+          <td>
+            <a href="{% url 'catalog:position-update' pk=position.pk %}"
+               class="btn btn-primary btn-sm">
+              Update
+            </a>
+            <a href="{% url 'catalog:position-delete' pk=position.pk %}"
+               class="btn btn-danger btn-sm">
+              Delete
+            </a>
+          </td>
+        </tr>
       {% empty %}
-        <li>No workers with this position.</li>
+        <tr>
+          <td colspan="4">No positions available.</td>
+        </tr>
       {% endfor %}
-    </ul>
-  {% empty %}
-    <p>No positions available.</p>
-  {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

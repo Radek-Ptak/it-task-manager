@@ -3,25 +3,68 @@
   <title>Task Types | IT Task Manager</title>
 {% endblock %}
 {% block content %}
-  <h1>Task types</h1>
-  {% for task_type in task_types %}
-    <h3>
-      {{ task_type.name }}:
-      {{ task_type.tasks_count }}
-      task{{ task_type.tasks_count|pluralize }}
-    </h3>
-    <ul>
-      {% for task in task_type.tasks.all %}
-        <li>
-          <a href="{% url 'catalog:task-detail' pk=task.pk %}">
-            {{ task.name }}
-          </a>
-        </li>
+  <div class="d-flex justify-content-between">
+    <h1>Task types</h1>
+    <div class="d-flex align-items-center">
+      <a href="{% url 'catalog:task-type-create' %}" class="btn btn-success d-flex justify-content-center align-items-center">
+        Create
+      </a>
+      <a href="{% url 'catalog:index' %}" class="btn btn-secondary ml-2">
+        Back
+      </a>
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Task type</th>
+        <th>Number of tasks</th>
+        <th>Tasks</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task_type in task_types %}
+        <tr>
+          <td>
+            {{ task_type.name }}
+          </td>
+          <td>
+            {{ task_type.tasks_count }}
+            task{{ task_type.tasks_count|pluralize }}
+          </td>
+          <td>
+            <div class="tasks-scroll">
+              <ul class="mb-0">
+                {% for task in task_type.tasks.all %}
+                  <li>
+                    <a href="{% url 'catalog:task-detail' pk=task.pk %}">
+                      {{ task.name }}
+                    </a>
+                  </li>
+                {% empty %}
+                  <li>No tasks for this type.</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </td>
+          <td>
+            <a href="{% url 'catalog:task-type-update' pk=task_type.pk %}"
+               class="btn btn-primary btn-sm">
+              Update
+            </a>
+            <a href="{% url 'catalog:task-type-delete' pk=task_type.pk %}"
+               class="btn btn-danger btn-sm">
+              Delete
+            </a>
+          </td>
+        </tr>
       {% empty %}
-        <li>No tasks for this type.</li>
+        <tr>
+          <td colspan="3">No task types available.</td>
+        </tr>
       {% endfor %}
-    </ul>
-  {% empty %}
-    <p>No task types available.</p>
-  {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
 {% endblock %}

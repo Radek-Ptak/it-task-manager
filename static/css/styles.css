@@ -1,3 +1,16 @@
 body {
     margin-top: 20px;
 }
+.tasks-scroll {
+    max-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.tasks-scroll ul {
+    padding-left: 20px;
+}
+.workers-scroll {
+    max-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

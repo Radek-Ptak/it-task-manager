@@ -74,6 +74,11 @@ class Task(models.Model):
         blank=True,
         related_name="tasks"
     )
+    created_by = models.ForeignKey(
+        Worker,
+        on_delete=models.PROTECT,
+        related_name="created_tasks",
+    )
 
     class Meta:
         ordering = ["deadline"]

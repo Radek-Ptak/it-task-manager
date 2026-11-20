@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete task?</h1>
+  <p>Are you sure you want to delete the task:
+    <strong>{{ task.name }}</strong> ?</p>
+  {% with assignees=task.assignees.all %}
+    {% if assignees %}
+      <p>Workers that will lose access to this task:
+        {% for worker in assignees %}
+          <li>
+            {{ worker.get_full_name|default:worker.username }}{% if not forloop.last %}, {% endif %}
+          </li>
+        {% endfor %}
+      </p>
+    {% endif %}
+  {% endwith %}
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="{% url 'catalog:task-detail' pk=task.pk %}" class="btn btn-secondary">
+      Cancel
+    </a>
+  </form>
+{% endblock %}
