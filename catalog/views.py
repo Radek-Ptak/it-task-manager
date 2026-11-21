@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from catalog.forms import TaskForm, WorkerCreationForm
+from catalog.forms import TaskForm, WorkerCreationForm, WorkerUpdateForm
 from catalog.mixins import StaffOrTaskAuthorMixin, StaffRequiredMixin, StaffOrOwnerMixin
 from catalog.models import Worker, Task, TaskType, Position
 
@@ -124,8 +124,13 @@ class WorkerUpdateView(
     generic.UpdateView
 ):
     model = Worker
-    form_class = WorkerCreationForm
+    form_class = WorkerUpdateForm
     success_url = reverse_lazy("catalog:worker-list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
 
 class WorkerDeleteView(
@@ -171,7 +176,7 @@ class TaskTypeUpdateView(
 
 class TaskTypeDeleteView(
     LoginRequiredMixin,
-    StaffOrTaskAuthorMixin,
+    StaffRequiredMixin,
     generic.DeleteView
 ):
     model = TaskType
